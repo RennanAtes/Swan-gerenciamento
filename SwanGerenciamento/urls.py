@@ -19,8 +19,20 @@ from django.urls import path
 from gerenciador import views
 from django.conf import settings
 from django.conf.urls.static import static
+from accounts import views as view_account
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('create_page/', views.criarPagina, name='criar_pagina')
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('create_page/', views.criarPagina, name='criar_pagina'),
+    path('api/register/', view_account.register, name='register' ),
+    path('api/login', view_account.user_login, name='login' ),
+    path('api/logout/', view_account.user_logout, name='logout'),
+    path('api/users/', view_account.todos_usuarios),
+    path('api/criar_pagina', views.criarPagina),
+]
